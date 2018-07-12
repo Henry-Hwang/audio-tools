@@ -3,7 +3,7 @@ import sys
 import commands
 import time
 import argparse
-
+import tinycmd
 class halo:
 	def dsp_reinit(self, cmd):
 		print sys._getframe().f_code.co_name
@@ -47,7 +47,7 @@ class halo:
 		return
 
 class amplifier(object):
-	def __init__(self, type, bus, addr, prefix, mixers, rtlog_init, rtlog_get, mute, unmute, temp, cali, load, unload, firmware):
+	def __init__(self, type, bus, addr, prefix, mixers, rtlog_init, rtlog_get, mute, unmute, temp, cali, load, unload, firmware, factor, name):
 		#print sys._getframe().f_code.co_name
 		self.type = type
 		self.bus = bus
@@ -63,6 +63,69 @@ class amplifier(object):
 		self.mixer_load = load
 		self.mixer_unload = unload
 		self.mixer_firmware = firmware
+		self.factor = factor
+		self.name = name
+	def cmd_verify(self, cmd, list):
+		hit = False
+		for i in range(len(list)):
+			print list[i]
+			if (cmd==list[i]):
+				hit = True
+				break
+		return hit
+
+	# Args:
+	# 		cmd: the short command string
+	#		list: the full command set, get from tinymix
+	# Returns:
+	# 		objcmds: list of command object.
+	#
+	# one 'cmd' can get several full commands, for example:
+	# DEBUGMDRXERR -->"SPK DSP1X Protection R cd DEBUGMDRXERR",
+	# DEBUGMDRXERR -->"RCV DSP1X Protection L cd DEBUGMDRXERR",
+
+	def get_commands(self, cmd, list):
+		str = cmd.split(',')
+
+		if (len(str) > 1):
+			strv = str[1].strip()
+		objcmds=[]
+
+		for i in range(len(list)):
+			if (-1 != list[i].find(str[0])):
+				tcmd = tinycmd.tinycmd(list[i], strv)
+				objcmds.append(tcmd)
+
+		return objcmds
+
+	# Args:
+	# 		cmd: the short command string
+	#		list: the full command set, get from tinymix
+	# Returns:
+	# 		objcmd: command object
+	def get_command(self, prefix, cmd, list):
+		objcmds = self.get_commands(cmd, list)
+		objcmd = objcmds[0]
+		for i in range(len(objcmds)):
+			#print ltarget[i][0:3]
+			cmd_s = objcmds[i].get_cmd()
+			if (prefix == cmd_s[0:len(prefix)]):
+				objcmd = objcmds[i]
+				objcmd.to_command()
+				break
+
+		return objcmd
+
+	# Args:
+	# 		cmds: the short command string list to be executed
+	#		list: the full command set, get from tinymix
+	# Returns:
+	# 		objcmd: list of command object
+	def get_bulk_command(self, prefix, cmds, list):
+		objcmds = []
+		for i in range(len(cmds)):
+			objcmds.append(self.get_command(prefix, cmds[i], list))
+		return objcmds
 
 	def get_type(self):
 		return self.type

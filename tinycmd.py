@@ -35,10 +35,11 @@ class tinycmd():
 		return self.execmd
 
 	def exe_command(self):
-		print self.execmd
+		#print self.execmd
 		os.system(self.execmd)
 
 	def exe_get_command(self):
 		result = os.popen(self.execmd)
 		ret = result.read()
+		print ret
 		return ret

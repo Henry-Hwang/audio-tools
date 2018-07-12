@@ -26,7 +26,7 @@ def rtlog_wisce_init(op):
 	os.system("adb shell")
 
 def rtlog_reload(op):
-	m1882 = m1882.m1882().dsp_reload(op)
+	m1882.m1882().dsp_reload(op)
 
 def rtlog_load(op):
 	m1882.m1882().dsp_load(op)
@@ -69,9 +69,12 @@ def rtlog_debug(op):
 rtlog_adb(0)
 
 parser = argparse.ArgumentParser()
-#parser.add_argument('bar', nargs='+', help='bar help')
+parser.add_argument("-ai", "--adb", required=False, help="adb init", type=str)
+parser.add_argument("-ap", "--adb-push", required=False, help="adb push", nargs=2, type=str)
+parser.add_argument("-wi", "--wisce-init", required=False, help="adb push", type=str)
+parser.add_argument("-de", "--debug", required=False, help="debug", type=str)
+
 parser.add_argument('-s', "--show-prot", required=False, help="display infomation of a given number", type=str)
-parser.add_argument("-de", "--debug", required=False, help="power on / off", type=str)
 parser.add_argument("-rl", "--reload", required=False, help="reload firmware for SPK/RCV", type=str)
 parser.add_argument("-ld", "--load", required=False, help="reload firmware for SPK/RCV", type=str)
 parser.add_argument("-ul", "--unload", required=False, help="reload firmware for SPK/RCV", type=str)
@@ -81,9 +84,7 @@ parser.add_argument("-dr", "--dump-regs", required=False, help="dump registers",
 parser.add_argument("-dl", "--dmesg-loop", required=False, help="dmesg loop message", type=str)
 parser.add_argument("-w", "--write", required=False, help="write [SPK, reg, val]", nargs=3, type=str)
 parser.add_argument("-r", "--read", required=False, help="read [SPK, reg]", nargs=2, type=str)
-parser.add_argument("-ai", "--adb", required=False, help="adb init", type=str)
-parser.add_argument("-ap", "--adb-push", required=False, help="adb push", nargs=2, type=str)
-parser.add_argument("-wi", "--wisce-init", required=False, help="adb push",default="none", type=str)
+
 
 
 #parser.print_help()
@@ -100,6 +101,7 @@ if arg.wisce_init:
 	rtlog_wisce_init(arg.wisce_init)
 if arg.dump_regs:
 	rtlog_dump_regs(arg.dump_regs)
+
 if arg.show_prot:
 	rtlog_show_prot(arg.show_prot)
 if arg.reload:
