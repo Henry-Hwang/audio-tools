@@ -41,5 +41,5 @@ class tinycmd():
 	def exe_get_command(self):
 		result = os.popen(self.execmd)
 		ret = result.read()
-		print ret
+		#print ret
 		return ret

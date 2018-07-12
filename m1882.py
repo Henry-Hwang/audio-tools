@@ -3,7 +3,7 @@ import sys
 import commands
 import time
 import argparse
-import csdevs
+import cs35l41
 import tparser
 import tinycmd
 
@@ -98,10 +98,10 @@ class m1882():
 
 
 	_rtlog_init = ["RAMESPERCAPTUREWI,		0x00 0x00 0x07 0xD0",
-							"RTLOG_VARIABLE,		0x00 0x00 0x03 0x9D 0x00 0x00 0x03 0xAE",
-							"RTLOG_COUNT,			0x00 0x00 0x00 0x02",
-							"RTLOG_CAN_READ,		0x00 0x00 0x00 0x02",
-							"RTLOG_ENABLE,			0x00 0x00 0x00 0x01",]
+					"RTLOG_VARIABLE,		0x00 0x00 0x03 0x9D 0x00 0x00 0x03 0xAE",
+					"RTLOG_COUNT,			0x00 0x00 0x00 0x02",
+					"RTLOG_CAN_READ,		0x00 0x00 0x00 0x02",
+					"RTLOG_ENABLE,			0x00 0x00 0x00 0x01",]
 	_rtlog_get = ["RTLOG_DATA,",]
 	_dsp_mute = ["CSPL_COMMAND,	0x00 0x00 0x00 0x01", "dsfsd"]
 	_dsp_unmute = ["CSPL_COMMAND,	0x00 0x00 0x00 0x02",]
@@ -116,7 +116,7 @@ class m1882():
 	_rcv_firmware = ["DSP1 Firmware,\'Protection Left\'",]
 
 	def __init__(self):
-		self.cs35l35_r = csdevs.cs35l41(1, "spi1.0", 0, "SPK",
+		self.cs35l41_r = cs35l41.cs35l41(1, "spi1.0", 0, "SPK",
 							self._dsp_mixers,
 							self._rtlog_init,
 							self._rtlog_get,
@@ -127,7 +127,7 @@ class m1882():
 							self._dsp_load,
 							self._dsp_unload,
 							self._spk_firmware)
-		self.cs35l35_l = csdevs.cs35l41(1, "spi1.1", 0, "RCV",
+		self.cs35l41_l = cs35l41.cs35l41(1, "spi1.1", 0, "RCV",
 							self._dsp_mixers,
 							self._rtlog_init,
 							self._rtlog_get,
@@ -141,75 +141,75 @@ class m1882():
 
 	def show_prot(self, spk):
 		if(spk == "SPK"):
-			self.cs35l35_r.show_prot()
+			self.cs35l41_r.show_prot()
 		if(spk == "RCV"):
-			self.cs35l35_l.show_prot()
+			self.cs35l41_l.show_prot()
 		if(spk == "BOTH"):
-			self.cs35l35_r.show_prot()
+			self.cs35l41_r.show_prot()
 
 	def dsp_reload(self, spk):
 		if(spk == "SPK"):
-			self.cs35l35_r.dsp_unload()
+			self.cs35l41_r.dsp_unload()
 			time.sleep(1)
-			self.cs35l35_r.dsp_load()
+			self.cs35l41_r.dsp_load()
 		if(spk == "RCV"):
-			self.cs35l35_l.dsp_unload()
+			self.cs35l41_l.dsp_unload()
 			time.sleep(1)
-			self.cs35l35_l.dsp_load()
+			self.cs35l41_l.dsp_load()
 		if(spk == "BOTH"):
-			self.cs35l35_r.dsp_unload()
+			self.cs35l41_r.dsp_unload()
 			time.sleep(1)
-			self.cs35l35_r.dsp_load()
+			self.cs35l41_r.dsp_load()
 
 	def dsp_load(self, spk):
 		if(spk == "SPK"):
-			self.cs35l35_r.dsp_load()
+			self.cs35l41_r.dsp_load()
 		if(spk == "RCV"):
-			self.cs35l35_l.dsp_load()
+			self.cs35l41_l.dsp_load()
 		if(spk == "BOTH"):
-			self.cs35l35_r.dsp_load()
+			self.cs35l41_r.dsp_load()
 
 	def dsp_unload(self, spk):
 		if(spk == "SPK"):
-			self.cs35l35_r.dsp_unload()
+			self.cs35l41_r.dsp_unload()
 		if(spk == "RCV"):
-			self.cs35l35_l.dsp_unload()
+			self.cs35l41_l.dsp_unload()
 		if(spk == "BOTH"):
-			self.cs35l35_r.dsp_unload()
+			self.cs35l41_r.dsp_unload()
 
 	def dsp_mute(self, spk):
 		if(spk == "SPK"):
-			self.cs35l35_r.dsp_mute()
+			self.cs35l41_r.dsp_mute()
 		if(spk == "RCV"):
-			self.cs35l35_l.dsp_mute()
+			self.cs35l41_l.dsp_mute()
 		if(spk == "BOTH"):
-			self.cs35l35_r.dsp_mute()
+			self.cs35l41_r.dsp_mute()
 
 	def dsp_unmute(self, spk):
 		if(spk == "SPK"):
-			self.cs35l35_r.dsp_unmute()
+			self.cs35l41_r.dsp_unmute()
 		if(spk == "RCV"):
-			self.cs35l35_l.dsp_unmute()
+			self.cs35l41_l.dsp_unmute()
 		if(spk == "BOTH"):
-			self.cs35l35_r.dsp_unmute()
+			self.cs35l41_r.dsp_unmute()
 
 	def dump_regs(self, spk):
 		if(spk == "SPK"):
-			self.cs35l35_r.dump_regs()
+			self.cs35l41_r.dump_regs()
 		if(spk == "RCV"):
-			self.cs35l35_l.dump_regs()
+			self.cs35l41_l.dump_regs()
 
 	def reg_write(self, args):
 		if(args[0] == "SPK"):
-			self.cs35l35_r.reg_write(args[1], args[2])
+			self.cs35l41_r.reg_write(args[1], args[2])
 		if(args[0] == "RCV"):
-			self.cs35l35_l.reg_write(args[1], args[2])
+			self.cs35l41_l.reg_write(args[1], args[2])
 
 	def reg_read(self, args):
 		if(args[0] == "SPK"):
-			self.cs35l35_r.reg_read(args[1])
+			self.cs35l41_r.reg_read(args[1])
 		if(args[0] == "RCV"):
-			self.cs35l35_l.reg_read(args[1])
+			self.cs35l41_l.reg_read(args[1])
 
 	def stereo_show_prot(self, z_min_r, z_max_r, temp_r):
 		z_min_r =  z_min_r * Decimal(self.get_factor())

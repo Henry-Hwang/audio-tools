@@ -3,17 +3,13 @@ import sys
 import commands
 import time
 import argparse
-import cscore
 import tinycmd
 import tparser
-import debugfs
 from decimal import Decimal
 
-class cs35l41(cscore.amplifier):
-	name = "CS35L41"
-	factor = 5.857143
-
-	def __init__(self, type, bus, addr, prefix, mixers, rtlog_init, rtlog_get, mute, unmute, temp, cali, load, unload, firmware):
+class amplifier(object):
+	def __init__(self, type, bus, addr, prefix, mixers, rtlog_init, rtlog_get, mute, unmute, temp, cali, load, unload, firmware, factor, name):
+		#print sys._getframe().f_code.co_name
 		self.type = type
 		self.bus = bus
 		self.addr = addr
@@ -28,12 +24,8 @@ class cs35l41(cscore.amplifier):
 		self.mixer_load = load
 		self.mixer_unload = unload
 		self.mixer_firmware = firmware
-		super(cs35l41,self).__init__( type, bus, addr, prefix, mixers, rtlog_init, rtlog_get, mute, unmute, temp, cali, load, unload, firmware)
-
-	def get_factor(self):
-		return self.factor
-
-
+		self.factor = factor
+		self.name = name
 	def cmd_verify(self, cmd, list):
 		hit = False
 		for i in range(len(list)):
@@ -96,6 +88,11 @@ class cs35l41(cscore.amplifier):
 			objcmds.append(self.get_command(prefix, cmds[i], list))
 		return objcmds
 
+	def get_factor(self):
+		return self.factor
+
+
+
 	def get_prot(self, result, temp_h):
 		parser = tparser.parser()
 		temp = parser.n1_32bit_str(temp_h)
@@ -107,6 +104,24 @@ class cs35l41(cscore.amplifier):
 		factor_max = parser.to_decimal(factor_max, 5, 18)
 
 		return z_min, z_max, temp, factor_max
+	def show_prot(self):
+		objcmds = self.get_bulk_command(self.prefix, self.mixer_rtlog_init, self.mixers)
+		for i in range(len(objcmds)):
+			objcmds[i].exe_command()
+
+		print "----------------------------------------"
+		for i in range(100):
+			objcmd = self.get_command(self.prefix, self.mixer_temp[0], self.mixers)
+			temp = objcmd.exe_get_command()
+
+			objcmd = self.get_command(self.prefix, self.mixer_rtlog_get[0], self.mixers)
+			result = objcmd.exe_get_command()
+			z_min, z_max, temp, factor_max = self.get_prot(result, temp)
+			z_min =  z_min * Decimal(self.factor)
+			z_max =  z_max * Decimal(self.factor)
+
+			print "(%3.2f" % z_min, " %3.2f )ohm"  % z_max, "  T (%3.2f)" %temp
+
 
 	def dsp_load(self):
 		objcmd = self.get_command(self.prefix, self.mixer_firmware[0], self.mixers)
@@ -141,21 +156,58 @@ class cs35l41(cscore.amplifier):
 		dbgfs = debugfs.debugfs()
 		dbgfs.reg_read(self.bus, reg)
 
-	def show_prot(self):
-		objcmds = self.get_bulk_command(self.prefix, self.mixer_rtlog_init, self.mixers)
-		for i in range(len(objcmds)):
-			objcmds[i].exe_command()
 
-		print "----------------------------------------"
-		for i in range(100):
-			objcmd = self.get_command(self.prefix, self.mixer_temp[0], self.mixers)
-			temp = objcmd.exe_get_command()
+	def get_type(self):
+		return self.type
 
-			objcmd = self.get_command(self.prefix, self.mixer_rtlog_get[0], self.mixers)
-			result = objcmd.exe_get_command()
-			z_min, z_max, temp, factor_max = self.get_prot(result, temp)
-			z_min =  z_min * Decimal(self.factor)
-			z_max =  z_max * Decimal(self.factor)
+	def get_bus(self):
+		return self.bus
 
-			print "(%3.2f" % z_min, " %3.2f )ohm"  % z_max, "  T (%3.2f)" %temp
+	def get_addr(self):
+		return self.addr
 
+	def get_prefix(self):
+		return self.prefix
+
+	def get_mixers(self):
+		return self.mixers
+
+	def get_rtlog_init(self):
+		return self.mixer_rtlog_init
+
+	def get_rtlog_get(self):
+		return self.mixer_rtlog_get
+
+	def get_mute(self):
+		return self.mixer_mute
+
+	def get_unmute(self):
+		return self.mixer_unmute
+
+	def get_temp(self):
+		return self.mixer_temp
+
+	def get_cali(self):
+		return self.mixer_cali
+
+	def get_load(self):
+		return self.mixer_load
+
+	def get_unload(self):
+		return self.mixer_unload
+
+	def get_firmware(self):
+		return self.mixer_firmware
+
+	def amp_route(self, path):
+		print sys._getframe().f_code.co_name
+		return
+
+	def amp_reg_dump():
+		print sys._getframe().f_code.co_name
+
+	def amp_reg_set(addr, value):
+		print sys._getframe().f_code.co_name
+
+	def amp_reg_get(addr):
+		print sys._getframe().f_code.co_name
