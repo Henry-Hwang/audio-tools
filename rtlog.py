@@ -5,7 +5,7 @@ import sys
 import commands
 import time
 import argparse
-import meizu
+import m1882
 import tparser
 from decimal import Decimal
 
@@ -21,26 +21,30 @@ def rtlog_adb(op):
 def rtlog_adb_push(op):
 	os.system("adb push " + op[0] + " " + op[1])
 
+def rtlog_wisce_init(op):
+	os.system("adb forward tcp:22349 tcp:22349")
+	os.system("adb shell")
+
 def rtlog_reload(op):
-	m1882 = meizu.m1882().dsp_reload(op)
+	m1882 = m1882.m1882().dsp_reload(op)
 
 def rtlog_load(op):
-	meizu.m1882().dsp_load(op)
+	m1882.m1882().dsp_load(op)
 
 def rtlog_unload(op):
-	meizu.m1882().dsp_unload(op)
+	m1882.m1882().dsp_unload(op)
 	return
 
 def rtlog_mute(op):
-	meizu.m1882().dsp_mute(op)
+	m1882.m1882().dsp_mute(op)
 	return
 
 def rtlog_unmute(op):
-	meizu.m1882().dsp_unmute(op)
+	m1882.m1882().dsp_unmute(op)
 	return
 
 def rtlog_show_prot(op):
-	meizu.m1882().show_prot(op)
+	m1882.m1882().show_prot(op)
 
 def rtlog_dmesg_loop(op):
 	CMDSTR = "adb shell dmesg -c | grep -iE " + op
@@ -49,16 +53,16 @@ def rtlog_dmesg_loop(op):
 		os.system(CMDSTR)
 
 def rtlog_dump_regs(op):
-	meizu.m1882().dump_regs(op)
+	m1882.m1882().dump_regs(op)
 
 def rtlog_write(op):
-	meizu.m1882().reg_write(op)
+	m1882.m1882().reg_write(op)
 
 def rtlog_read(op):
-	meizu.m1882().reg_read(op)
+	m1882.m1882().reg_read(op)
 
 def rtlog_debug(op):
-	meizu.m1882().dsp_mute(op)
+	m1882.m1882().dsp_mute(op)
 
 #start here
 
@@ -79,6 +83,7 @@ parser.add_argument("-w", "--write", required=False, help="write [SPK, reg, val]
 parser.add_argument("-r", "--read", required=False, help="read [SPK, reg]", nargs=2, type=str)
 parser.add_argument("-ai", "--adb", required=False, help="adb init", type=str)
 parser.add_argument("-ap", "--adb-push", required=False, help="adb push", nargs=2, type=str)
+parser.add_argument("-wi", "--wisce-init", required=False, help="adb push",default="none", type=str)
 
 
 #parser.print_help()
@@ -91,6 +96,8 @@ if arg.adb:
 	rtlog_adb(arg.adb)
 if arg.adb_push:
 	rtlog_adb_push(arg.adb_push)
+if arg.wisce_init:
+	rtlog_wisce_init(arg.wisce_init)
 if arg.dump_regs:
 	rtlog_dump_regs(arg.dump_regs)
 if arg.show_prot:
