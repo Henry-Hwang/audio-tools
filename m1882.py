@@ -6,6 +6,7 @@ import argparse
 import cs35l41
 import tparser
 import tinycmd
+from cs35l41 import Cs35l41
 
 from decimal import Decimal
 
@@ -116,7 +117,7 @@ class M1882(object):
 	_rcv_firmware = ["DSP1 Firmware,\'Protection Left\'",]
 
 	def __init__(self):
-		self.cs35l41_r = cs35l41.cs35l41(1, "spi1.0", 0, "SPK",
+		self.cs35l41_r = Cs35l41(1, "spi1.0", 0, "SPK",
 							self._dsp_mixers,
 							self._rtlog_init,
 							self._rtlog_get,
@@ -127,7 +128,7 @@ class M1882(object):
 							self._dsp_load,
 							self._dsp_unload,
 							self._spk_firmware)
-		self.cs35l41_l = cs35l41.cs35l41(1, "spi1.1", 0, "RCV",
+		self.cs35l41_l = Cs35l41(1, "spi1.1", 0, "RCV",
 							self._dsp_mixers,
 							self._rtlog_init,
 							self._rtlog_get,

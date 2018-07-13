@@ -6,8 +6,12 @@ import argparse
 import tinycmd
 import tparser
 from decimal import Decimal
+from tinycmd import Tinycmd
+from tparser import Tparser
 
-class amplifier(object):
+
+
+class Amplifier(object):
 	def __init__(self, type, bus, addr, prefix, mixers, rtlog_init, rtlog_get, mute, unmute, temp, cali, load, unload, firmware, factor, name):
 		#print sys._getframe().f_code.co_name
 		self.type = type
@@ -55,7 +59,7 @@ class amplifier(object):
 
 		for i in range(len(list)):
 			if (-1 != list[i].find(str[0])):
-				tcmd = tinycmd.tinycmd(list[i], strv)
+				tcmd = tinycmd.Tinycmd(list[i], strv)
 				objcmds.append(tcmd)
 
 		return objcmds
@@ -95,7 +99,7 @@ class amplifier(object):
 
 
 	def get_prot(self, result, temp_h):
-		parser = tparser.parser()
+		parser = Tparser()
 		temp = parser.n1_32bit_str(temp_h)
 		z_min, z_max, factor_min, factor_max = parser.n4_32bit_str(result)
 		temp = parser.to_decimal(temp, 10, 13)
@@ -156,7 +160,6 @@ class amplifier(object):
 	def reg_read(self, reg):
 		dbgfs = debugfs.debugfs()
 		dbgfs.reg_read(self.bus, reg)
-
 
 	def get_type(self):
 		return self.type
