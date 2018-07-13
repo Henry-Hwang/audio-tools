@@ -7,7 +7,7 @@ import tinycmd
 import tparser
 
 
-class halo:
+class Halo:
 	def dsp_reinit(self, cmd):
 		print sys._getframe().f_code.co_name
 		return

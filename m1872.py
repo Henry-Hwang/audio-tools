@@ -9,7 +9,7 @@ import tinycmd
 
 from decimal import Decimal
 
-class m1872():
+class M1872():
 	name ="1872"
 
 	_dsp_mixers = [

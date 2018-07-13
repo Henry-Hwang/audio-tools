@@ -7,7 +7,7 @@ import tinycmd
 import tparser
 from decimal import Decimal
 
-class amplifier(object):
+class Amplifier(object):
 	def __init__(self, type, bus, addr, prefix, mixers, rtlog_init, rtlog_get, mute, unmute, temp, cali, load, unload, firmware, factor, name):
 		#print sys._getframe().f_code.co_name
 		self.type = type
@@ -156,7 +156,6 @@ class amplifier(object):
 	def reg_read(self, reg):
 		dbgfs = debugfs.debugfs()
 		dbgfs.reg_read(self.bus, reg)
-
 
 	def get_type(self):
 		return self.type

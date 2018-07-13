@@ -8,7 +8,7 @@ import tparser
 
 from decimal import Decimal
 
-class tinycmd():
+class Tinycmd():
 	shell = "adb shell "
 	tinymix = "tinymix "
 	command = ""
