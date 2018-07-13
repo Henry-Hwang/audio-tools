@@ -101,7 +101,7 @@ class Amplifier(object):
 		parser = Tparser()
 		temp = parser.n1_32bit_str(temp_h)
 		z_min, z_max, factor_min, factor_max = parser.n4_32bit_str(result)
-		temp = parser.to_decimal(temp, 10, 13)
+		temp = parser.to_decimal(temp, 9, 14)
 		z_min = parser.to_decimal(z_min, 10, 13)
 		z_max = parser.to_decimal(z_max, 10, 13)
 		factor_min = parser.to_decimal(factor_min, 5, 18)

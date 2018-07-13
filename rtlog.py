@@ -10,6 +10,8 @@ import adb
 import tparser
 from decimal import Decimal
 from m1882 import M1882
+from m1872 import M1872
+
 from adb import Adb
 class Rtlog(M1882, Adb):
 	def __init__(self):
