@@ -9,7 +9,7 @@ import tinycmd
 
 from decimal import Decimal
 
-class m1882():
+class M1882(object):
 	name = "1882"
 
 	_dsp_mixers = ["RCV DSP1X Protection L 4a4 config_XM_stru",
@@ -147,7 +147,7 @@ class m1882():
 		if(spk == "BOTH"):
 			self.cs35l41_r.show_prot()
 
-	def dsp_reload(self, spk):
+	def reload(self, spk):
 		if(spk == "SPK"):
 			self.cs35l41_r.dsp_unload()
 			time.sleep(1)
@@ -161,7 +161,7 @@ class m1882():
 			time.sleep(1)
 			self.cs35l41_r.dsp_load()
 
-	def dsp_load(self, spk):
+	def load(self, spk):
 		if(spk == "SPK"):
 			self.cs35l41_r.dsp_load()
 		if(spk == "RCV"):
@@ -169,7 +169,7 @@ class m1882():
 		if(spk == "BOTH"):
 			self.cs35l41_r.dsp_load()
 
-	def dsp_unload(self, spk):
+	def unload(self, spk):
 		if(spk == "SPK"):
 			self.cs35l41_r.dsp_unload()
 		if(spk == "RCV"):
@@ -177,7 +177,7 @@ class m1882():
 		if(spk == "BOTH"):
 			self.cs35l41_r.dsp_unload()
 
-	def dsp_mute(self, spk):
+	def mute(self, spk):
 		if(spk == "SPK"):
 			self.cs35l41_r.dsp_mute()
 		if(spk == "RCV"):
@@ -185,7 +185,7 @@ class m1882():
 		if(spk == "BOTH"):
 			self.cs35l41_r.dsp_mute()
 
-	def dsp_unmute(self, spk):
+	def unmute(self, spk):
 		if(spk == "SPK"):
 			self.cs35l41_r.dsp_unmute()
 		if(spk == "RCV"):
@@ -210,11 +210,6 @@ class m1882():
 			self.cs35l41_r.reg_read(args[1])
 		if(args[0] == "RCV"):
 			self.cs35l41_l.reg_read(args[1])
-
-	def stereo_show_prot(self, z_min_r, z_max_r, temp_r):
-		z_min_r =  z_min_r * Decimal(self.get_factor())
-		z_max_r =  z_max_r * Decimal(self.get_factor())
-		print "(%3.2f" % z_min_r, " %3.2f )ohm"  % z_max_r, "  T (%3.2f)" %temp_r
 
 
 

@@ -11,7 +11,7 @@ from decimal import Decimal
 
 
 class debugfs():
-	def dump_registers(self, bus):
+	def regs_dump(self, bus):
 		os.system("adb shell cat /d/regmap/" + bus +"/registers > regs.txt")
 		os.system("subl regs.txt")
 	def reg_read(self, bus, reg):

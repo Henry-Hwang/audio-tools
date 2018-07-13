@@ -72,8 +72,8 @@ class m1872():
 				"AMP Enable Switch,	1",]
 	_dsp_unload = ["DSP Booted,		0",
 					"AMP Enable Switch,	0",]
-	_spk_firmware = ["DSP1 Firmware,\'Protection\'",]
-	_rcv_firmware = ["DSP1 Firmware,\'Protection\'",]
+	_spk_firmware = ["DSP1 Firmware,Protection",]
+	_rcv_firmware = ["DSP1 Firmware,Protection",]
 
 	def __init__(self):
 		self.cs35l41_r = cs35l41.cs35l41(1,"spi1.0", 0,"SPK",

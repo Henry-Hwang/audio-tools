@@ -26,6 +26,7 @@ class amplifier(object):
 		self.mixer_firmware = firmware
 		self.factor = factor
 		self.name = name
+
 	def cmd_verify(self, cmd, list):
 		hit = False
 		for i in range(len(list)):
@@ -146,7 +147,7 @@ class amplifier(object):
 
 	def dump_regs(self):
 		dbgfs = debugfs.debugfs()
-		dbgfs.dump_registers(self.bus)
+		dbgfs.regs_dump(self.bus)
 
 	def reg_write(self, reg, val):
 		dbgfs = debugfs.debugfs()

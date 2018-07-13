@@ -6,20 +6,18 @@ import commands
 import time
 import argparse
 import m1882
-import adb
+import rtlog
+
 import tparser
 from decimal import Decimal
-from m1882 import M1882
-from adb import Adb
-class Rtlog(M1882, Adb):
-	def __init__(self):
-			super(Rtlog,self).__init__()
+from rtlog import Rtlog
 
-
-'''
 #start here
 
-rtlog_adb(0)
+rt = Rtlog()
+
+#adb init
+rt.init(0)
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-ai", "--adb", required=False, help="adb init", type=str)
@@ -42,36 +40,33 @@ parser.add_argument("-r", "--read", required=False, help="read [SPK, reg]", narg
 
 #parser.print_help()
 arg = parser.parse_args()
-if arg.debug:
-	rtlog_debug(arg.debug)
+#if arg.debug:
+#	rt.debug(arg.debug)
 if arg.dmesg_loop:
-	rtlog_dmesg_loop(arg.dmesg_loop)
+	rt.dmesg_loop(arg.dmesg_loop)
 if arg.adb:
-	rtlog_adb(arg.adb)
+	rt.adb(arg.adb)
 if arg.adb_push:
-	rtlog_adb_push(arg.adb_push)
+	rt.adb_push(arg.adb_push)
 if arg.wisce_init:
-	rtlog_wisce_init(arg.wisce_init)
+	rt.wisce_init(arg.wisce_init)
+
 if arg.dump_regs:
-	rtlog_dump_regs(arg.dump_regs)
-
+	rt.dump_regs(arg.dump_regs)
 if arg.show_prot:
-	rtlog_show_prot(arg.show_prot)
+	rt.show_prot(arg.show_prot)
 if arg.reload:
-	rtlog_reload(arg.reload)
+	rt.reload(arg.reload)
 if arg.load:
-	rtlog_load(arg.load)
+	rt.load(arg.load)
 if arg.unload:
-	rtlog_unload(arg.unload)
+	rt.unload(arg.unload)
 if arg.mute:
-	rtlog_mute(arg.mute)
+	rt.mute(arg.mute)
 if arg.unmute:
-	rtlog_unmute(arg.unmute)
+	rt.unmute(arg.unmute)
 if arg.write:
-	rtlog_write(arg.write)
+	rt.reg_write(arg.write)
 if arg.read:
-	rtlog_read(arg.read)
-else:
-	print "adb init"
+	rt.reg_read(arg.read)
 
-'''
