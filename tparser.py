@@ -5,7 +5,8 @@ import time
 import argparse
 import csdevs
 from decimal import Decimal
-class Parser():
+
+class Tparser():
 	# RCV DSP1X Protection L cd CSPL_COMMAND
 	# convert 32bit string to int
 	# '01 02 0A 0B' --> 0x01020A0B
