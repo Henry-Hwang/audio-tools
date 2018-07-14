@@ -11,24 +11,16 @@ from tparser import Tparser
 
 
 class Amplifier(object):
-	def __init__(self, type, bus, addr, prefix, mixers, rtlog_init, rtlog_get, mute, unmute, temp, cali, load, unload, firmware, factor, name):
+	def __init__(self, type, bus, addr, prefix, firmware, factor, name, dict_mixers):
 		#print sys._getframe().f_code.co_name
 		self.type = type
 		self.bus = bus
 		self.addr = addr
 		self.prefix = prefix
-		self.mixers = mixers
-		self.mixer_rtlog_init = rtlog_init
-		self.mixer_rtlog_get = rtlog_get
-		self.mixer_mute = mute
-		self.mixer_unmute = unmute
-		self.mixer_temp = temp
-		self.mixer_cali = cali
-		self.mixer_load = load
-		self.mixer_unload = unload
 		self.mixer_firmware = firmware
 		self.factor = factor
 		self.name = name
+		self.dict_mixers = dict_mixers
 
 	def cmd_verify(self, cmd, list):
 		hit = False
@@ -109,16 +101,16 @@ class Amplifier(object):
 
 		return z_min, z_max, temp, factor_max
 	def show_prot(self):
-		objcmds = self.get_bulk_command(self.prefix, self.mixer_rtlog_init, self.mixers)
+		objcmds = self.get_bulk_command(self.prefix, self.dict_mixers['rtlog_init'], self.dict_mixers['mixers'])
 		for i in range(len(objcmds)):
 			objcmds[i].exe_command()
 
 		print "----------------------------------------"
 		for i in range(100):
-			objcmd = self.get_command(self.prefix, self.mixer_temp[0], self.mixers)
+			objcmd = self.get_command(self.prefix, self.dict_mixers['dsp_temp'][0], self.dict_mixers['mixers'])
 			temp = objcmd.exe_get_command()
 
-			objcmd = self.get_command(self.prefix, self.mixer_rtlog_get[0], self.mixers)
+			objcmd = self.get_command(self.prefix, self.dict_mixers['rtlog_get'][0], self.dict_mixers['mixers'])
 			result = objcmd.exe_get_command()
 			z_min, z_max, temp, factor_max = self.get_prot(result, temp)
 			z_min =  z_min * Decimal(self.factor)
@@ -128,24 +120,24 @@ class Amplifier(object):
 
 
 	def dsp_load(self):
-		objcmd = self.get_command(self.prefix, self.mixer_firmware[0], self.mixers)
+		objcmd = self.get_command(self.prefix, self.mixer_firmware[0], self.dict_mixers['mixers'])
 		objcmd.exe_command()
 
-		objcmds = self.get_bulk_command(self.prefix, self.mixer_load, self.mixers)
+		objcmds = self.get_bulk_command(self.prefix, self.dict_mixers['dsp_load'], self.dict_mixers['mixers'])
 		for i in range(len(objcmds)):
 			objcmds[i].exe_command()
 
 	def dsp_unload(self):
-		objcmds = self.get_bulk_command(self.prefix, self.mixer_unload, self.mixers)
+		objcmds = self.get_bulk_command(self.prefix, self.dict_mixers['dsp_unload'], self.dict_mixers['mixers'])
 		for i in range(len(objcmds)):
 			objcmds[i].exe_command()
 
 	def dsp_mute(self):
-		objcmd = self.get_command(self.prefix, self.mixer_mute[0], self.mixers)
+		objcmd = self.get_command(self.prefix, self.dict_mixers['dsp_mute'][0], self.dict_mixers['mixers'])
 		objcmd.exe_command()
 
 	def dsp_unmute(self):
-		objcmd = self.get_command(self.prefix, self.mixer_unmute[0], self.mixers)
+		objcmd = self.get_command(self.prefix, self.dict_mixers['dsp_unmute'][0], self.dict_mixers['mixers'])
 		objcmd.exe_command()
 
 	def dump_regs(self):
@@ -173,34 +165,34 @@ class Amplifier(object):
 		return self.prefix
 
 	def get_mixers(self):
-		return self.mixers
+		return self.dict_mixers
 
 	def get_rtlog_init(self):
-		return self.mixer_rtlog_init
+		return self.dict_mixers['rtlog_init']
 
 	def get_rtlog_get(self):
-		return self.mixer_rtlog_get
+		return self.dict_mixers['rtlog_get']
 
 	def get_mute(self):
-		return self.mixer_mute
+		return self.dict_mixers['dsp_mute']
 
 	def get_unmute(self):
-		return self.mixer_unmute
+		return self.dict_mixers['dsp_unmute']
 
 	def get_temp(self):
-		return self.mixer_temp
+		return self.dict_mixers['dsp_temp']
 
 	def get_cali(self):
-		return self.mixer_cali
+		return self.dict_mixers['dsp_cali']
 
 	def get_load(self):
-		return self.mixer_load
+		return self.dict_mixers['dsp_load']
 
 	def get_unload(self):
-		return self.mixer_unload
+		return self.dict_mixers['dsp_unload']
 
 	def get_firmware(self):
-		return self.mixer_firmware
+		return self.dict_mixers['spk_firmware']
 
 	def amp_route(self, path):
 		print sys._getframe().f_code.co_name

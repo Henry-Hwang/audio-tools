@@ -7,7 +7,7 @@ import cs35l41
 import tparser
 import tinycmd
 from cs35l41 import Cs35l41
-
+#from asoc import Asoc
 from decimal import Decimal
 
 class M1882(object):
@@ -116,29 +116,17 @@ class M1882(object):
 	_spk_firmware = ["DSP1 Firmware,\'Protection Right\'",]
 	_rcv_firmware = ["DSP1 Firmware,\'Protection Left\'",]
 
+	dict_mixers={"mixers":_dsp_mixers, "rtlog_init":_rtlog_init,
+				"rtlog_get":_rtlog_get, "dsp_mute":_dsp_mute,
+				"dsp_unmute":_dsp_unmute, "dsp_temp":_dsp_temp,
+				"dsp_cali":_dsp_cali, "dsp_load":_dsp_load,
+				"dsp_unload":_dsp_unload, "spk_firmware":_spk_firmware,
+				"rcv_firmware":_rcv_firmware};
 	def __init__(self):
 		self.cs35l41_r = Cs35l41(1, "spi1.0", 0, "SPK",
-							self._dsp_mixers,
-							self._rtlog_init,
-							self._rtlog_get,
-							self._dsp_mute,
-							self._dsp_unmute,
-							self._dsp_temp,
-							self._dsp_cali,
-							self._dsp_load,
-							self._dsp_unload,
-							self._spk_firmware)
+							self._spk_firmware, self.dict_mixers)
 		self.cs35l41_l = Cs35l41(1, "spi1.1", 0, "RCV",
-							self._dsp_mixers,
-							self._rtlog_init,
-							self._rtlog_get,
-							self._dsp_mute,
-							self._dsp_unmute,
-							self._dsp_temp,
-							self._dsp_cali,
-							self._dsp_load,
-							self._dsp_unload,
-							self._rcv_firmware)
+							self._rcv_firmware, self.dict_mixers)
 
 	def show_prot(self, spk):
 		if(spk == "SPK"):
@@ -212,6 +200,26 @@ class M1882(object):
 		if(args[0] == "RCV"):
 			self.cs35l41_l.reg_read(args[1])
 
+	def debug(self, args):
+		#cmdstr = "adb shell  find /proc/asound/card0/ -name status"
+		cmdstr = "adb shell  find /d/asoc/ -name \* "
+		print cmdstr
+		result = os.popen(cmdstr)
+		ret = result.read()
+		paths = ret.split('\n')
+		#asoc_t = Asoc()
+		for i in range(len(paths)):
+			print paths[i]
+			#result = os.popen("adb shell cat " + paths[i])
+			#ret = result.read()
+			#if (ret.strip() != "closed"):
+			#	print ret
+
+
+
+
+		#print ret
+
 	def argument(self):
 		parser = argparse.ArgumentParser()
 		parser.add_argument("-ai", "--adb", required=False, help="adb init", type=str)
@@ -233,6 +241,8 @@ class M1882(object):
 		return parser
 
 	def args_send(self, arg):
+		if arg.debug:
+			self.debug(arg.debug)
 		if arg.dmesg_loop:
 			self.dmesg_loop(arg.dmesg_loop)
 		if arg.adb:
@@ -259,4 +269,5 @@ class M1882(object):
 			self.reg_write(arg.write)
 		if arg.read:
 			self.reg_read(arg.read)
+
 
