@@ -16,3 +16,4 @@ from adb import Adb
 class Rtlog(M1882, Adb):
 	def __init__(self):
 			super(Rtlog,self).__init__()
+	

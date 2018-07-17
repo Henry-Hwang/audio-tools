@@ -7,7 +7,7 @@ import cs35l41
 import tparser
 import tinycmd
 from cs35l41 import Cs35l41
-#from asoc import Asoc
+from asoc import Asoc
 from decimal import Decimal
 
 class M1882(object):
@@ -122,6 +122,9 @@ class M1882(object):
 				"dsp_cali":_dsp_cali, "dsp_load":_dsp_load,
 				"dsp_unload":_dsp_unload, "spk_firmware":_spk_firmware,
 				"rcv_firmware":_rcv_firmware};
+
+	codec_filter = ["spi1.0", "spi1.1"]
+
 	def __init__(self):
 		self.cs35l41_r = Cs35l41(1, "spi1.0", 0, "SPK",
 							self._spk_firmware, self.dict_mixers)
@@ -201,6 +204,7 @@ class M1882(object):
 			self.cs35l41_l.reg_read(args[1])
 
 	def debug(self, args):
+		'''
 		#cmdstr = "adb shell  find /proc/asound/card0/ -name status"
 		cmdstr = "adb shell  find /d/asoc/ -name \* "
 		print cmdstr
@@ -214,8 +218,17 @@ class M1882(object):
 			#ret = result.read()
 			#if (ret.strip() != "closed"):
 			#	print ret
+		'''
+		asoc = Asoc(self.codec_filter)
+		asoc.find_codecs()
+		asoc.get_snd_cards()
+		asoc.find_snd_cards()
+		c = asoc.get_on_widgets("sdm845-tavil-snd-card", "spi1.0")
+		#c = asoc.get_widgets("sdm845-tavil-snd-card", "spi1.1")
+		#c = asoc.get_codecs("sdm845-tavil-snd-card")
 
-
+		for i in range(len(c)):
+			print c[i].name
 
 
 		#print ret
