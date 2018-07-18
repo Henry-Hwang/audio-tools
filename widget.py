@@ -32,6 +32,8 @@ class Widget(object):
 	def __init__(self, path, status):
 		self.path = path
 		self.status = status
+		self.ins_name = []
+		self.outs_name = []
 
 	def init(self):
 		#get name of widget
@@ -92,4 +94,11 @@ class Widget(object):
 
 	def get_outs_name(self):
 		return self.outs_name
+
+	def show(self):
+		print self.name, self.state
+		print self.ins_name
+		print self.outs_name
+
+
 

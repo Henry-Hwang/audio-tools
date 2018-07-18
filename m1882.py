@@ -228,7 +228,8 @@ class M1882(object):
 		#c = asoc.get_codecs("sdm845-tavil-snd-card")
 
 		for i in range(len(c)):
-			print c[i].name
+			print "----------"
+			print c[i].show()
 
 
 		#print ret

@@ -18,8 +18,9 @@ class Codec(object):
 	def __init__(self, name, path):
 		self.name = name
 		self.path = path
+		# without init will cause memery over write
 		self.widgets=[]
-		pass
+		self.dsps=[]
 
 	def find_widgets(self):
 		cmdstr = "adb shell find " + self.path + "/dapm" + " -maxdepth 1"
