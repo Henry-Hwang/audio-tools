@@ -18,8 +18,8 @@ rt = Rtlog()
 
 #adb init
 rt.init(0)
-
-parser = rt.argument()
+parser = argparse.ArgumentParser()
+rt.argument(parser)
 arg = parser.parse_args()
 rt.args_send(arg)
 
