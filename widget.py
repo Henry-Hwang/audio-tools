@@ -73,9 +73,10 @@ class Widget(object):
 		for i in range(1, len(self.status)):
 			self.status[i] = self.status[i].strip()
 			if ("out" == self.status[i][0:len("out")]):
-				self.outs_name.append(self.status[i].replace("out","").strip())
+				self.outs_name.append(self.status[i].replace("out","").replace("static","").replace("\"\"","").strip())
+
 			elif ("in" == self.status[i][0:len("in")]):
-				self.ins_name.append(self.status[i].replace("in", "").strip())
+				self.ins_name.append(self.status[i].replace("in", "").replace("static","").replace("\"\"","").strip())
 
 		#for i in range(len(self.outs_name)):
 		#	print self.outs_name[i]
@@ -94,6 +95,16 @@ class Widget(object):
 
 	def get_outs_name(self):
 		return self.outs_name
+
+	# Get out widgets in the list
+	def get_outs(self, widgets):
+		outs = []
+		for i in range(len(widgets)):
+			for j in range(len(self.outs_name)):
+				if (-1 != self.outs_name[j].find(widgets[i].name)):
+					outs.append(widgets[i])
+					break
+		return outs
 
 	def show(self):
 		print self.name, self.state

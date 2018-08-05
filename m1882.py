@@ -8,6 +8,9 @@ import tparser
 import tinycmd
 from cs35l41 import Cs35l41
 from asoc import Asoc
+from dpath import Dpath
+from dapm import Dapm
+
 from decimal import Decimal
 
 class M1882(object):
@@ -220,6 +223,7 @@ class M1882(object):
 			#	print ret
 		'''
 		asoc = Asoc(self.codec_filter)
+		dapm = Dapm()
 		asoc.find_codecs()
 		asoc.get_snd_cards()
 		asoc.find_snd_cards()
@@ -228,10 +232,11 @@ class M1882(object):
 		#c = asoc.get_codecs("sdm845-tavil-snd-card")
 
 		for i in range(len(c)):
-			print "----------"
-			print c[i].show()
+			dapm.add_widget(c[i])
+			#print "----------"
+			#print c[i].show()
 
-
+		dapm.create_multiway_tree()
 		#print ret
 
 	def argument(self, parser):
@@ -243,8 +248,7 @@ class M1882(object):
 		parser.add_argument("-um", "--unmute", required=False, help="unmute AMP, SPK/RCV", type=str)
 		parser.add_argument("-dr", "--dump-regs", required=False, help="dump registers", type=str)
 		parser.add_argument("-dl", "--dmesg-loop", required=False, help="dmesg loop message", type=str)
-		parser.add_argument("-w", "--write", required=False, help="write [SPK, reg, val]", nargs=3, type=str)
-		parser.add_argument("-r", "--read", required=False, help="read [SPK, reg]", nargs=2, type=str)
+		parser.add_argument("-de", "--debug", required=False, help="debug", type=str)
 
 	def args_send(self, arg):
 		if arg.debug:
@@ -263,9 +267,6 @@ class M1882(object):
 			self.mute(arg.mute)
 		if arg.unmute:
 			self.unmute(arg.unmute)
-		if arg.write:
-			self.reg_write(arg.write)
-		if arg.read:
-			self.reg_read(arg.read)
+
 
 

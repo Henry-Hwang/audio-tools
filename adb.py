@@ -14,7 +14,6 @@ class Adb(object):
 		parser.add_argument("-ai", "--adb", required=False, help="adb init", type=str)
 		parser.add_argument("-ap", "--adb-push", required=False, help="adb push", nargs=2, type=str)
 		parser.add_argument("-wi", "--wisce-init", required=False, help="adb push", type=str)
-		parser.add_argument("-de", "--debug", required=False, help="debug", type=str)
 
 	def init(self, op):
 		os.system("adb wait-for-device")

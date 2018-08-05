@@ -3,7 +3,6 @@ import sys
 import commands
 import time
 import argparse
-import csdevs
 import tparser
 
 from decimal import Decimal
