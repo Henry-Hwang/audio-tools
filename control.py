@@ -14,7 +14,7 @@ class Codec(object):
 		pass
 
 	def get_codecs(self):
-		cmdstr = "adb shell  cat /d/asoc/codecs"
+		cmdstr = "adb shell cat /d/asoc/codecs"
 		print cmdstr
 		result = os.popen(cmdstr)
 		ret = result.read()
@@ -29,7 +29,7 @@ class Codec(object):
 			#	print ret
 
 	def get_snd_cards(self):
-		cmdstr = "adb shell  cat /proc/asound/cards"
+		cmdstr = "adb shell cat /proc/asound/cards"
 		print cmdstr
 		result = os.popen(cmdstr)
 		ret = result.read()

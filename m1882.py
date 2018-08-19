@@ -113,7 +113,7 @@ class M1882(object):
 	_dsp_cali = ["CAL_R,",]
 
 	_dsp_load = ["PCM Source,			DSP",
-				   "AMP Enable Switch,	1",]
+				 "AMP Enable Switch,	1",]
 	_dsp_unload = ["DSP Booted,		0",
 					"AMP Enable Switch,	0",]
 	_spk_firmware = ["DSP1 Firmware,\'Protection Right\'",]
@@ -208,8 +208,8 @@ class M1882(object):
 
 	def debug(self, args):
 		'''
-		#cmdstr = "adb shell  find /proc/asound/card0/ -name status"
-		cmdstr = "adb shell  find /d/asoc/ -name \* "
+		#cmdstr = "adb shell find /proc/asound/card0/ -name status"
+		cmdstr = "adb shell find /d/asoc/ -name \* "
 		print cmdstr
 		result = os.popen(cmdstr)
 		ret = result.read()

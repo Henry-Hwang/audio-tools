@@ -113,10 +113,10 @@ class Amplifier(object):
 			objcmd = self.get_command(self.prefix, self.dict_mixers['rtlog_get'][0], self.dict_mixers['mixers'])
 			result = objcmd.exe_get_command()
 			z_min, z_max, temp, factor_max = self.get_prot(result, temp)
-			z_min =  z_min * Decimal(self.factor)
-			z_max =  z_max * Decimal(self.factor)
+			z_min = z_min * Decimal(self.factor)
+			z_max = z_max * Decimal(self.factor)
 
-			print "(%3.2f" % z_min, " %3.2f )ohm"  % z_max, "  T (%3.2f)" %temp
+			print "(%3.2f" % z_min, " %3.2f )ohm" % z_max, " T (%3.2f)" %temp
 
 
 	def dsp_load(self):

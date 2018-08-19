@@ -20,7 +20,7 @@ class Debugfs():
 		ret = result.read()
 		print ret
 	def reg_write(self, bus, reg, val):
-		cmdstr = "adb shell  \"echo " + reg + " " + val + " > /d/regmap/" + bus +"/registers\""
+		cmdstr = "adb shell \"echo " + reg + " " + val + " > /d/regmap/" + bus +"/registers\""
 		os.system(cmdstr)
 
 	def argument(self, parser):

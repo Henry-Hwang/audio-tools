@@ -21,7 +21,7 @@ class Asoc(object):
 
 	def find_codecs(self):
 		f_codecs = []
-		cmdstr = "adb shell  cat /d/asoc/codecs"
+		cmdstr = "adb shell cat /d/asoc/codecs"
 		print cmdstr
 		result = os.popen(cmdstr)
 		ret = result.read()
@@ -40,7 +40,7 @@ class Asoc(object):
 		else:
 			self.dict_components['codecs'] = codecs
 	def get_snd_cards(self):
-		cmdstr = "adb shell  cat /proc/asound/cards"
+		cmdstr = "adb shell cat /proc/asound/cards"
 		print cmdstr
 		result = os.popen(cmdstr)
 		ret = result.read()

@@ -30,6 +30,14 @@ class Dapm(object):
 	def add_widgets(self, widgets):
 		self.widgets.extend(widgets)
 
+	def show_path(self, path):
+		str = []
+
+		for n in path:
+			str.append(n.name)
+
+		print "-->".join(str)
+
 	def search_out(self, nodes = [], widgets=[], result=[]):
 		for i in range(len(nodes)):
 			outs_t = nodes[i].object.get_outs(widgets)
@@ -46,9 +54,10 @@ class Dapm(object):
 	# 深度优先查找 返回从根节点到目标节点的路径
 	def deep_first_search(self, node, name, path=[]):
 		#print node
-		path.append(node.object)  # 当前节点值添加路径列表
+		path.append(node.object) # 当前节点值添加路径列表
 
 		if node.object.name == name:	# 如果找到目标 返回路径列表
+			self.show_path(path)
 			return path
 
 		if node.child_list == []:	# 如果没有孩子列表 就 返回 no 回溯标记
@@ -56,12 +65,14 @@ class Dapm(object):
 
 		for n in node.child_list: # 对孩子列表里的每个孩子 进行递归
 			t_path = copy.deepcopy(path)	# 深拷贝当前路径列表
+			self.show_path(t_path)
+
 			res = self.deep_first_search(n, name, t_path)
 
-			if res == 'no': # 如果返回no，说明找到头 没找到  利用临时路径继续找下一个孩子节点
+			if res == 'no': # 如果返回no，说明找到头 没找到 利用临时路径继续找下一个孩子节点
 				continue
 			else :
-				return res  # 如果返回的不是no 说明 找到了路径
+				return res # 如果返回的不是no 说明 找到了路径
 
 		return 'no' # 如果所有孩子都没找到 则 回溯
 
@@ -90,14 +101,7 @@ class Dapm(object):
 		res = path1 + path2
 		length = len(res)
 
-		str_p = []
-		for i in range(length):
-			str_p.append(res[i].name)
-
-		print '-->'.join(str_p)
-		#path = '->'.join(res)
-
-		#return '%s:%s'%(length, path)
+		self.show_path(res)
 
 	def create_multiway_tree(self):
 		print "create_multiway_tree"
@@ -112,10 +116,14 @@ class Dapm(object):
 				dpath.add_widget(w)
 				break
 
+		if w == "":
+			print "No widgets, may be no DAPM path connected"
+			return
+
 		outs = w.get_outs(self.widgets)
 
-		for i in range(len(outs)):
-			print outs[i].name
+		#for i in range(len(outs)):
+		#	print outs[i].name
 
 		root.append(Dnode(w))
 		self.search_out(root, self.widgets, result=[])

@@ -42,14 +42,14 @@ class Codec(object):
 			#cat the status of widgets
 			'''
 			/d/asoc/sdm845-tavil-snd-card/codec:spi1.0/dapm/SPK\ ASPRX1
-			SPK ASPRX1: On  in 1 out 6 - R18432(0x4800) mask 0x10000
-			out  "static" "SPK VBSTMON ADC"
-			out  "static" "SPK TEMPMON ADC"
-			out  "static" "SPK VPMON ADC"
-			out  "static" "SPK IMON ADC"
-			out  "static" "SPK VMON ADC"
-			out  "static" "SPK DSP1"
-			in  "static" "SPK AMP Enable"
+			SPK ASPRX1: On in 1 out 6 - R18432(0x4800) mask 0x10000
+			out "static" "SPK VBSTMON ADC"
+			out "static" "SPK TEMPMON ADC"
+			out "static" "SPK VPMON ADC"
+			out "static" "SPK IMON ADC"
+			out "static" "SPK VMON ADC"
+			out "static" "SPK DSP1"
+			in "static" "SPK AMP Enable"
 			'''
 			cmdstr = "adb shell cat " + lines[i]
 			result = os.popen(cmdstr)
@@ -57,7 +57,7 @@ class Codec(object):
 			winfo = ret.split('\n')
 			w = Widget(lines[i], winfo)
 			w.init()
-			#print "Add  " + w.name + "   to " + self.name
+			#print "Add " + w.name + " to " + self.name
 			self.widgets.append(w)
 		#print self
 		#print "=============" + self.name
